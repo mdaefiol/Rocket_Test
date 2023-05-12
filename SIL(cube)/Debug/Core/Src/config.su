@@ -1,0 +1,2 @@
+../Core/Src/config.c:27:6:HAL_TIM_PeriodElapsedCallback	16	static
+../Core/Src/config.c:41:6:HAL_UART_RxCpltCallback	24	static
