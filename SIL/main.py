@@ -1,9 +1,14 @@
 import serial
 import time
 import struct
+import sys
 
 # Configurações da porta serial
-port = "COM4"
+if sys.platform.startswith('win'):
+    port = "COM4"  # Porta serial no Windows (exemplo)
+else:
+    port = "/dev/ttyUSB0"  # Porta serial no Linux (exemplo)
+
 baudrate = 115200
 byte_size = serial.EIGHTBITS
 parity = serial.PARITY_NONE
