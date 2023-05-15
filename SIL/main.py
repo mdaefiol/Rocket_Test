@@ -27,7 +27,7 @@ while True:
         break
 
 # Abre o arquivo em modo leitura
-with open("data_SIL.txt", "r") as file:
+with open("data_accx.txt", "r") as file:
     # Le os dados linha por linha e envia pela porta serial
     for line in file:
         data_values = line.strip().split()                                  # Separa os valores em uma lista
