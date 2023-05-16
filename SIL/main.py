@@ -21,38 +21,40 @@ time.sleep(1)
 
 # Aguarda o byte 0x01 ser recebido
 while True:
-    data = ser.read()                           # Ler um byte pela porta serial
-    if data == b'\x01':                         # Verifica se é o byte 0x01
+    data = ser.read()  # Ler um byte pela porta serial
+    if data == b'\x01':  # Verifica se é o byte 0x01
         print("Byte 0x01 recebido")
+        time.sleep(1)  #
         break
 
 # Abre o arquivo em modo leitura
-with open("data_accx.txt", "r") as file:
+time.sleep(3)  #
+with open("data_SIL.txt", "r") as file:
     # Le os dados linha por linha e envia pela porta serial
     for line in file:
-        data_values = line.strip().split()                                  # Separa os valores em uma lista
-        for i, data_value in enumerate(data_values):
-            if "E" in data_value:                                           # Verifica se é um número exponencial
-                                                                            # Extrai o número base e a exponencial do número exponencial
+        data_values = line.strip().split()  # Separa os valores em uma lista
+        data_bytes = bytearray()
+        for data_value in data_values:
+            if "E" in data_value:  # Verifica se é um número exponencial
+                # Extrai o número base e a exponencial do número exponencial
                 base, exp = data_value.split("E")
-                data_float = float(base) * pow(10, int(exp))                # Multiplica o número base pela exponencial
+                data_float = float(base) * pow(10, int(exp))  # Multiplica o número base pela exponencial
             else:
-                data_float = float(data_value)                              # Converte o valor p/ um número float
+                data_float = float(data_value)  # Converte o valor p/ um número float
 
-            data_bytes = struct.pack('>f', data_float)                      # Converte o número float para bytes (32 bits) -> 4 bytes
-            data_bytes_32bit = struct.pack('>f', data_float)[0:4]           # Obtém apenas os 4 bytes mais significativos
+            data_bytes.extend(struct.pack('>f', data_float))  # Converte o número float para bytes (32 bits) e adiciona à lista
 
-            for i in range(0, 4):
-                ser.write(bytes([data_bytes_32bit[i]]))                     # Envia cada byte do número pela porta serial
-                print(f"Dado {i+1}: {hex(data_bytes_32bit[i])}", end=' ')   # Imprime o byte em hexa
-                time.sleep(0.005)                                           # Atraso para enviar a 200Hz
+        ser.write(data_bytes)  # Envia os 16 bytes pela porta serial
+        for i, byte in enumerate(data_bytes):
+            print(f"Dado {i+1}: {hex(byte)}", end=' ')  # Imprime cada byte em hexa
+        print('')
+        data_float_32bit = struct.unpack('>4f', data_bytes)  # Converte os 16 bytes de volta para os 4 floats de 32 bits
+        print("Números float de 32 bits enviados:", data_float_32bit)
+        time.sleep(0.2)  # 100ms
 
-            print('')
-            data_float_32bit = struct.unpack('>f', data_bytes_32bit)        # Converte os 4 bytes p/ float de 32 bits
-            print("Número float de 32 bits enviado:", data_float_32bit)
 
 # Atraso de 10 ms após o envio de todos os dados do arquivo
-time.sleep(0.01)
+time.sleep(0.1)
 
 # Fecha o arquivo e a porta serial
 file.close()
