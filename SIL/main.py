@@ -45,8 +45,10 @@ with open("data_SIL.txt", "r") as file:
         print('')
         data_float_32bit = struct.unpack('>4f', data_bytes)         # Converte os 16 bytes de volta para os 4 floats de 32 bits
         print("Dado float enviado:", data_float_32bit)
-        time.sleep(0.1)  # 5ms
-
+        time.sleep(0.05)  # 5ms
+# 5000 -> 500ms
+# 500 -> 50ms
+# 50 -> 5 ms
 
 # Atraso de 10 ms após o envio de todos os dados do arquivo
 time.sleep(0.1)
