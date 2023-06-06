@@ -1,2 +1,2 @@
-# rocket_test
- Software in the Loop (SIL) para computador de bordo de foguetes experimentais.
+# Rocket_Test
+Software in the Loop (SIL) para computador de bordo de foguetes experimentais.
