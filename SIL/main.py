@@ -29,7 +29,7 @@ while True:
         break
 
 # Abre o arquivo que contem os dados dos sensores em modo leitura
-time.sleep(3)  #
+time.sleep(5)  #
 with open("data_SIL.txt", "r") as file:
                                                                      # Le os dados linha por linha e envia pela porta serial
     for line in file:
